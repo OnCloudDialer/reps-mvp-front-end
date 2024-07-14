@@ -1,13 +1,12 @@
 import { Button, Checkbox, FormControl, FormErrorMessage, FormLabel, Input, Link, Text } from '@chakra-ui/react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { useLoginUserMutation, useRefreshTokenQuery } from '../services/auth/auth'
+import { useNavigate } from 'react-router-dom'
+import { useLoginUserMutation } from '../services/auth/auth'
 import { useForm } from 'react-hook-form'
 import { loginRequestDTO } from '../services/auth/type'
 
 const Login = () => {
     const navigate = useNavigate()
     const [login, { isLoading }] = useLoginUserMutation()
-    const { isSuccess } = useRefreshTokenQuery()
     const {
         handleSubmit,
         register,
@@ -16,9 +15,6 @@ const Login = () => {
 
     const onSubmit = async (values: loginRequestDTO) => {
         await login(values).unwrap()
-    }
-    if (isSuccess) {
-        return <Navigate to={'/'} />
     }
 
     return (

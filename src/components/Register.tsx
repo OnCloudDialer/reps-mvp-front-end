@@ -1,13 +1,12 @@
 import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Link, Text } from '@chakra-ui/react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { useRefreshTokenQuery, useRegisterUserMutation } from '../services/auth/auth'
+import { useNavigate } from 'react-router-dom'
+import { useRegisterUserMutation } from '../services/auth/auth'
 import { signUpRequestDTO } from '../services/auth/type'
 import { useForm } from 'react-hook-form'
 
 const Register = () => {
     const navigate = useNavigate()
     const [registerUser, { isLoading }] = useRegisterUserMutation()
-    const { isSuccess } = useRefreshTokenQuery()
     const {
         handleSubmit,
         register,
@@ -18,9 +17,6 @@ const Register = () => {
         await registerUser(values).unwrap()
     }
 
-    if (isSuccess) {
-        return <Navigate to={'/'} />
-    }
 
     return (
         <div className='flex flex-col items-center justify-center gap-7 min-w-[380px]'>

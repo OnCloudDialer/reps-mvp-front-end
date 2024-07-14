@@ -45,7 +45,6 @@ export const authService = createApi({
     refreshToken: builder.query<loginResponse, void>({
       query: () => "/refresh-token",
       onQueryStarted: async (credentials, { dispatch, queryFulfilled }) => {
-        console.log("🚀 ~ onQueryStarted: ~ credentials:", credentials);
         const { data } = await queryFulfilled;
         if (data.data?.access_token) {
           setUserAuthToken(data.data.access_token);

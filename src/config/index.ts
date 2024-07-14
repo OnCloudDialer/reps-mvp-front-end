@@ -1,5 +1,5 @@
 const Config = {
-  baseApiUrl: "http://localhost:3001/api",
+  baseApiUrl: import.meta.env.VITE_API_URL,
 };
 
 export { Config };
