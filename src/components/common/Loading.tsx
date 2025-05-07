@@ -1,15 +1,9 @@
-import { Spinner } from '@chakra-ui/react'
+import { Spin } from "antd"
 
 const Loading = () => {
     return (
-        <div className="w-full h-screen flex items-center justify-center">
-            <Spinner
-                thickness='4px'
-                speed='0.65s'
-                emptyColor='gray.200'
-                color='blue.500'
-                size='xl'
-            />
+        <div className="w-full h-full flex items-center justify-center">
+            <Spin />
         </div>
     )
 }

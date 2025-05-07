@@ -1,10 +1,24 @@
+import { useEffect, useState } from 'react'
 import Loading from '../components/common/Loading'
 import AppRoutesProvider from '../providers/AppRoutesProvider'
-import { useRefreshTokenQuery } from '../services/auth/auth'
+import { useRefreshTokenMutation } from '../services/auth/auth'
+import { GetUserAuthToken } from '../helpers'
 
 const ApplicationProvider = () => {
-    const { isLoading } = useRefreshTokenQuery()
-    if (isLoading) {
+    const [triggerRefresh, { isLoading }] = useRefreshTokenMutation()
+    const [checked, setChecked] = useState(false)
+
+    useEffect(() => {
+        const refreshToken = GetUserAuthToken()
+        if (refreshToken) {
+            triggerRefresh()
+                .finally(() => setChecked(true))
+        } else {
+            setChecked(true)
+        }
+    }, [])
+
+    if (!checked || isLoading) {
         return <Loading />
     }
 

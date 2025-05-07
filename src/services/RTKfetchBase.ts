@@ -1,7 +1,7 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
-import { BuildUrl, GetUserAuthToken } from "../helpers";
+import { GetUserAuthToken } from "../helpers";
 import { Config } from "../config";
-const baseUrl = BuildUrl(Config.baseApiUrl, "/auth");
+const baseUrl = Config.baseApiUrl;
 
 export const RTKCustomFetchBase = fetchBaseQuery({
   baseUrl,

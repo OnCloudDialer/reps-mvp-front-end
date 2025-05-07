@@ -1,17 +1,11 @@
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Link, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useRegisterUserMutation } from '../services/auth/auth'
+import { Form, Input, Button, Typography } from 'antd'
 import { signUpRequestDTO } from '../services/auth/type'
-import { useForm } from 'react-hook-form'
 
 const Register = () => {
     const navigate = useNavigate()
     const [registerUser, { isLoading }] = useRegisterUserMutation()
-    const {
-        handleSubmit,
-        register,
-        formState: { errors },
-    } = useForm<signUpRequestDTO>()
 
     const submitRegisterRequest = async (values: signUpRequestDTO) => {
         await registerUser(values).unwrap()
@@ -21,40 +15,50 @@ const Register = () => {
     return (
         <div className='flex flex-col items-center justify-center gap-7 min-w-[380px]'>
             <div className="flex flex-col w-full justify-center gap-3 items-center">
-                <Text fontWeight={600} fontSize={'xx-large'}>Create your Account</Text>
-                <Text fontWeight={400} fontSize={'medium'}>Start making your dreams come true</Text>
+                <Typography>Create your Account</Typography>
+                <Typography>Start making your dreams come true</Typography>
             </div>
-            <form onSubmit={handleSubmit(submitRegisterRequest)} className='w-full flex flex-col items-start justify-start gap-8'>
-                <div className='w-full flex flex-col items-start justify-start gap-5'>
-                    <FormControl isInvalid={errors.name ? true : false}>
-                        <FormLabel>Name</FormLabel>
-                        <Input {...register('name', { required: "Name Is Required", })} size={'md'} type='text' />
-                        <FormErrorMessage>
-                            {errors.name && errors.name.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={errors.email ? true : false}>
-                        <FormLabel>Email </FormLabel>
-                        <Input {...register('email', { required: "Email Is Required", })} size={'md'} type='email' />
-                        <FormErrorMessage>
-                            {errors.email && errors.email.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={errors.password ? true : false}>
-                        <FormLabel>Password</FormLabel>
-                        <Input {...register('password', { required: "Password Is Required", })} size={'md'} type='password' />
-                        <FormErrorMessage>
-                            {errors.password && errors.password.message}
-                        </FormErrorMessage>
-                        <FormHelperText>Minium 8 Character Password</FormHelperText>
-                    </FormControl>
-                </div>
-                <div className='w-full'>
-                    <Button type='submit' colorScheme='facebook' isLoading={isLoading} className='w-full'>Create Account</Button>
-                </div>
-            </form>
+            <Form
+                name="register-form"
+                layout="vertical"
+                onFinish={submitRegisterRequest}
+                style={{ width: '100%' }}
+            >
+                <Form.Item
+                    name="name"
+                    label="Username"
+                    rules={[{ required: true, message: 'Please enter a username!' }]}
+                >
+                    <Input placeholder="Enter your username" />
+                </Form.Item>
+
+                <Form.Item
+                    name="email"
+                    label="Email"
+                    rules={[
+                        { required: true, message: 'Please enter your email!' },
+                        { type: 'email', message: 'Please enter a valid email!' },
+                    ]}
+                >
+                    <Input placeholder="Enter your email" />
+                </Form.Item>
+
+                <Form.Item
+                    name="password"
+                    label="Password"
+                    rules={[{ required: true, message: 'Please enter a password!' }]}
+                >
+                    <Input.Password placeholder="Enter your password" />
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" block loading={isLoading}>
+                        Register
+                    </Button>
+                </Form.Item>
+            </Form>
             <div className="flex items-center justify-center w-full">
-                <Text>Already have an account? <Link onClick={() => navigate('/login')}>Log in</Link></Text>
+                <Typography>Already have an account? <Button type='text' onClick={() => navigate('/login')}>Log in</Button></Typography>
             </div>
         </div >
     )

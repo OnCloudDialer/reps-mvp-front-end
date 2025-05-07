@@ -1,63 +1,53 @@
-import { Button, Checkbox, FormControl, FormErrorMessage, FormLabel, Input, Link, Text } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { useLoginUserMutation } from '../services/auth/auth'
-import { useForm } from 'react-hook-form'
 import { loginRequestDTO } from '../services/auth/type'
+import { Button, Form, Input, Typography } from 'antd'
 
 const Login = () => {
     const navigate = useNavigate()
     const [login, { isLoading }] = useLoginUserMutation()
-    const {
-        handleSubmit,
-        register,
-        formState: { errors },
-    } = useForm<loginRequestDTO>()
 
     const onSubmit = async (values: loginRequestDTO) => {
         await login(values).unwrap()
     }
 
     return (
-        <div className='flex flex-col items-center justify-center gap-7 min-w-[380px]'>
-            <div className="flex flex-col w-full justify-center gap-3 items-center">
-                <Text fontWeight={600} fontSize={'xx-large'}>Login to your Account</Text>
-                <Text fontWeight={400} fontSize={'medium'}>Star making your dreams come true.</Text>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className='w-full flex flex-col items-start justify-start gap-8'>
-                <div className='w-full flex flex-col items-start justify-start gap-4'>
-                    <FormControl isInvalid={errors.email ? true : false}>
-                        <FormLabel>Email </FormLabel>
-                        <Input {...register('email', { required: 'Email is Required!', })} size={'md'} type='email' />
-                        <FormErrorMessage>
-                            {errors.email && errors.email.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                    <FormControl isInvalid={errors.password ? true : false}>
-                        <FormLabel>Password</FormLabel>
-                        <Input {...register('password', {
-                            required: 'This is required', minLength: {
-                                value: 4,
-                                message: 'Minimum length should be 4'
-                            },
-                        })} size={'md'} type='password' />
-                        <FormErrorMessage>
-                            {errors.password && errors.password.message}
-                        </FormErrorMessage>
-                    </FormControl>
-                </div>
-                <div className="flex w-full justify-between items-center">
-                    <Checkbox defaultChecked>Remember Me</Checkbox>
-                    <Link>Forgot Password?</Link>
-                </div>
-                <div className='w-full'>
-                    <Button colorScheme='facebook' className='w-full' type='submit' isLoading={isLoading}>Login</Button>
-                </div>
+        <div className="flex flex-col items-center justify-center gap-7 min-w-[380px]">
 
-            </form>
+            <Form
+                name="login-form"
+                layout="vertical"
+                onFinish={onSubmit}
+                style={{ width: '100%' }}
+            >
+                <Form.Item
+                    name="email"
+                    label="Username"
+                    rules={[{ required: true, message: 'Please enter your username!' }]}
+                >
+                    <Input placeholder="Enter your username" />
+                </Form.Item>
+
+                <Form.Item
+                    name="password"
+                    label="Password"
+                    rules={[{ required: true, message: 'Please enter your password!' }]}
+                >
+                    <Input.Password placeholder="Enter your password" />
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" block loading={isLoading}>
+                        Login
+                    </Button>
+                </Form.Item>
+            </Form>
+
             <div className="flex items-start justify-start w-full">
-                <Text>Don't have an account?
-                    <Link onClick={() => navigate('/register')}>Sign Up</Link>
-                </Text>
+                <Typography>
+                    Don't have an account?{' '}
+                    <Button type='text' onClick={() => navigate('/register')}>Sign Up</Button>
+                </Typography>
             </div>
         </div>
     )
