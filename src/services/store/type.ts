@@ -1,4 +1,4 @@
-import { Contact } from "../contact";
+import { Contact } from "../contact/type";
 import { Tag } from "../tag/type";
 
 export interface Store {
@@ -38,6 +38,7 @@ export interface StoreContactQueryParams {
 }
 
 export interface StoreQueryParams {
+  contactId?: string;
   tags?: string;
   name?: string;
 }

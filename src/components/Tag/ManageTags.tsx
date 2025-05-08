@@ -73,7 +73,9 @@ export default function TagManagementUI() {
 
 
     return (
-        <PageLayout breadCrumbItems={[]}>
+        <PageLayout breadCrumbItems={[{
+            title: 'Tags'
+        }]}>
             <Button type="primary" loading={isLoading} onClick={() => handleOpenModal(null)}>+ Add Tag</Button>
             <Table loading={isLoading || isDeleting} className="mt-4" rowKey="id" dataSource={data} columns={columns} />
 

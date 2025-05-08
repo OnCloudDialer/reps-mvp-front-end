@@ -9,23 +9,25 @@ import {
     Tabs,
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { Contact, ContactForm } from '../../services/contact/type';
 import { contactRole } from '../../config';
-import { Contact } from '../../services/contact';
+import { useGetStoreQuery } from '../../services/store';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
 
-interface ContactFormProps {
-    onSubmit: (values: Contact) => void;
+interface ContactFormFormProps {
+    onSubmit: (values: ContactForm) => void;
     data?: Contact | undefined;
     loading: boolean;
 }
 
-const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
-    const [form] = Form.useForm<Contact>();
+const ContactFormForm = ({ onSubmit, loading, data }: ContactFormFormProps) => {
+    const [form] = Form.useForm<ContactForm>();
+    const { data: stores } = useGetStoreQuery({})
 
-    const onFinish = (values: Contact) => {
+    const onFinish = (values: ContactForm) => {
         const finalValues = {
             ...values,
         };
@@ -103,6 +105,18 @@ const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
                     ))}
                 </Select>
             </Form.Item>
+            <Form.Item
+                label="Associated Stores"
+                name="storeIds"
+                rules={[{ required: true, message: 'Please select a Store' }]}
+            >
+                <Select mode='multiple' placeholder="Select a Store"
+                    options={stores?.map(({ id, name }) => ({
+                        value: id,
+                        label: name
+                    }))}
+                />
+            </Form.Item>
 
             <Form.Item label="Profile Picture">
                 <Tabs defaultActiveKey="upload" >
@@ -138,4 +152,4 @@ const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
     );
 };
 
-export default ContactForm;
+export default ContactFormForm;

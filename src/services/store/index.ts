@@ -8,7 +8,7 @@ import {
   StoreQueryParams,
 } from "./type";
 import { ApiResponseDto } from "../type";
-import { Contact } from "../contact";
+import { Contact } from "../contact/type";
 
 export const storeService = createApi({
   reducerPath: "store",

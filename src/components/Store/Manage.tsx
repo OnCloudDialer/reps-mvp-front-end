@@ -110,12 +110,17 @@ export default function ManageStore() {
     }, [])
 
     return (
-        <PageLayout breadCrumbItems={[]}>
+        <PageLayout breadCrumbItems={[{
+            title: 'Stores'
+        }]}>
 
             <div className="bg-white p-4 px-0 flex items-center justify-between rounded-md w-100">
-                <StoreSearchFilter onSearch={(data) => {
+                <StoreSearchFilter onReset={() => {
+                    trigger({
+                    })
+                }} onSearch={(data) => {
                     trigger(data)
-                }} tags={tags} />
+                }} />
                 <Button type="primary" onClick={() => handleOpenModal()}>+ Add Store</Button>
             </div>
             <Table loading={isLoading} className="mt-4" rowKey="id" dataSource={stores} columns={columns} />

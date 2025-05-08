@@ -3,7 +3,7 @@ import { Button, Drawer } from 'antd';
 import React from 'react';
 import ContactForm from './ContactForm';
 import { useCreateStoreContactMutation, useUpdateStoreContactMutation } from '../../services/store';
-import { Contact } from '../../services/contact';
+import { Contact } from '../../services/contact/type';
 
 
 interface ContactDrawerProps {
@@ -32,9 +32,9 @@ const ContactDrawer: React.FC<ContactDrawerProps> = ({ storeId, onFinish, data, 
             </Button>
             <Drawer title="Add Contact" onClose={onClose} open={open}>
                 <ContactForm data={data} loading={isCreating || isUpdating} onSubmit={(values) => {
-                    const formValues = {
+                    const formValues: any = {
                         ...values,
-                        storeId
+                        storeIds: [storeId]
                     }
                     if (data) {
                         updateStoreContact(formValues).then(onClose);

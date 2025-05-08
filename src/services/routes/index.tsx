@@ -1,3 +1,5 @@
+import ManageContacts from "../../components/Contact/Manage";
+import ViewContact from "../../components/Contact/ViewContact";
 import Home from "../../components/Home";
 import Login from "../../components/Login";
 import Register from "../../components/Register";
@@ -10,8 +12,10 @@ export const AppRouteSlugs = {
   register: "/register",
   home: "/",
   manageStores: "/manage-stores",
+  manageContacts: "/manage-contacts",
   manageTags: "/manage-tags",
-  viewStore: "/view-store/:id"
+  viewStore: "/view-store/:id",
+  viewContact: "/view-contact/:id"
 };
 
 
@@ -39,6 +43,15 @@ export const AppRoutes = [
   {
     path: AppRouteSlugs.manageTags,
     component: <ManageTags />
+  },
+
+  {
+    path: AppRouteSlugs.manageContacts,
+    component: <ManageContacts />
+  },
+  {
+    path: AppRouteSlugs.viewContact,
+    component: <ViewContact />
   },
   {
     path: AppRouteSlugs.viewStore,

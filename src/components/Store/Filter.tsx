@@ -1,16 +1,18 @@
 import { Form, Input, Select, Button, Row, Col } from 'antd';
-import { Tag } from '../../services/tag/type';
 import { SearchOutlined } from '@ant-design/icons';
 import { StoreQueryParams } from '../../services/store/type';
+import { useGetTagsQuery } from '../../services/tag';
 
 
 interface StoreSearchFilterProps {
-    tags: Tag[];
     onSearch: (data: StoreQueryParams) => void;
+    loading?: boolean;
+    onReset: () => void;
 }
 
-const StoreSearchFilter = ({ tags = [], onSearch }: StoreSearchFilterProps) => {
+const StoreSearchFilter = ({ onSearch, loading }: StoreSearchFilterProps) => {
     const [form] = Form.useForm<StoreQueryParams>();
+    const { data: tags, isLoading } = useGetTagsQuery()
 
     const handleFinish = (values: StoreQueryParams) => {
         onSearch(values);
@@ -25,6 +27,7 @@ const StoreSearchFilter = ({ tags = [], onSearch }: StoreSearchFilterProps) => {
         <Form
             form={form}
             layout="inline"
+            disabled={loading}
             onFinish={handleFinish}
             className='w-full'
         >
@@ -38,10 +41,11 @@ const StoreSearchFilter = ({ tags = [], onSearch }: StoreSearchFilterProps) => {
                 <Col span={6}>
                     <Form.Item name="tags">
                         <Select
+                            loading={isLoading}
                             mode="multiple"
                             allowClear
                             placeholder="Filter by tags"
-                            options={tags.map(({ id, name }) => ({
+                            options={tags?.map(({ id, name }) => ({
                                 label: name,
                                 value: id
                             }))}
