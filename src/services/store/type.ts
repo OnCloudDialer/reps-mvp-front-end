@@ -1,3 +1,6 @@
+import { Contact } from "../contact";
+import { Tag } from "../tag/type";
+
 export interface Store {
   id: string;
   name: string;
@@ -17,14 +20,7 @@ export interface TagElement {
   id: string;
   storeId: string;
   tagId: string;
-  tag: TagTag;
-}
-
-export interface TagTag {
-  id: string;
-  name: string;
-  organizationId: string;
-  userId: string;
+  tag: Tag;
 }
 
 export interface StoreContact {
@@ -35,13 +31,24 @@ export interface StoreContact {
   contact: Contact;
 }
 
-export interface Contact {
+export interface StoreContactQueryParams {
   id: string;
+  name?: string;
+  roles?: string;
+}
+
+export interface StoreQueryParams {
+  tags?: string;
+  name?: string;
+}
+
+export interface StoreForm {
+  id?: string;
   name: string;
-  phone: string;
-  email: string;
-  profilePicture: null | string;
-  role: string;
-  organizationId: string;
-  userId: string;
+  address: string;
+  city: string;
+  region: string;
+  latitude: number;
+  longitude: number;
+  tagIds: string[];
 }

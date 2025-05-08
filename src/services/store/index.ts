@@ -1,7 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { RTKCustomFetchBase } from "../RTKfetchBase";
-import { Contact, Store, StoreContact } from "./type";
+import {
+  Store,
+  StoreContact,
+  StoreContactQueryParams,
+  StoreForm,
+  StoreQueryParams,
+} from "./type";
 import { ApiResponseDto } from "../type";
+import { Contact } from "../contact";
 
 export const storeService = createApi({
   reducerPath: "store",
@@ -9,31 +16,40 @@ export const storeService = createApi({
   baseQuery: RTKCustomFetchBase,
   endpoints: (builder) => ({
     // Create Store
-    createStore: builder.mutation({
+    createStore: builder.mutation<Store | undefined, StoreForm>({
       query: (data) => ({
         method: "POST",
         url: "/stores",
         body: data,
       }),
+      transformResponse(baseQueryReturnValue: ApiResponseDto<Store>) {
+        return baseQueryReturnValue.data;
+      },
       invalidatesTags: ["Stores"],
     }),
 
     // Get All Store
-    getStore: builder.query({
+    getStore: builder.query<Store[], StoreQueryParams | undefined>({
       providesTags: [{ type: "Stores" }],
       query: (params) => ({
         method: "GET",
         params,
         url: "/stores",
       }),
+      transformResponse(baseQueryReturnValue: ApiResponseDto<Store[]>) {
+        return baseQueryReturnValue.data || [];
+      },
     }),
 
     // Get update Store by ID
-    updateStoreById: builder.query({
+    updateStoreById: builder.query<Store | undefined, string>({
       query: (id) => ({
         method: "GET",
         url: `/stores/${id}`,
       }),
+      transformResponse(baseQueryReturnValue: ApiResponseDto<Store>) {
+        return baseQueryReturnValue.data;
+      },
     }),
 
     // Get One Store by ID
@@ -50,7 +66,7 @@ export const storeService = createApi({
     // Get One Store Contacts by ID
     getStoreContactsById: builder.query<
       ApiResponseDto<StoreContact[]>,
-      { id: string; name?: string; roles?: string }
+      StoreContactQueryParams
     >({
       providesTags: ["Store-Contacts"],
       query: ({ id, name, roles }) => ({
@@ -67,50 +83,65 @@ export const storeService = createApi({
     }),
 
     // Create Store Contact
-    createStoreContact: builder.mutation<StoreContact, Contact>({
+    createStoreContact: builder.mutation<StoreContact | undefined, Contact>({
       query: (data) => ({
         method: "POST",
         url: "/stores/contacts/create",
         body: data,
       }),
+      transformResponse: (response: ApiResponseDto<StoreContact>) => {
+        return response.data;
+      },
       invalidatesTags: ["Store-Contacts"],
     }),
 
     // Update Store Contact
-    updateStoreContact: builder.mutation<StoreContact, Contact>({
+    updateStoreContact: builder.mutation<StoreContact | undefined, Contact>({
       query: (data) => ({
         method: "PATCH",
         url: "/stores/contacts/update",
         body: data,
       }),
+      transformResponse: (response: ApiResponseDto<StoreContact>) => {
+        return response.data;
+      },
       invalidatesTags: ["Store-Contacts"],
     }),
 
     // Delete Store Contact
-    deleteStoreContact: builder.mutation({
+    deleteStoreContact: builder.mutation<null | undefined, string>({
       query: (id: string) => ({
         method: "DELETE",
         url: `/stores/contacts/${id}`,
       }),
+      transformResponse: (response: ApiResponseDto<null>) => {
+        return response.data;
+      },
       invalidatesTags: ["Store-Contacts"],
     }),
 
     // Update Store
-    updateStore: builder.mutation({
-      query: ({ id, data }) => ({
+    updateStore: builder.mutation<Store | undefined, StoreForm>({
+      query: (data) => ({
         method: "PATCH",
-        url: `/stores/${id}`,
+        url: `/stores/${data.id}`,
         body: data,
       }),
+      transformResponse: (response: ApiResponseDto<Store>) => {
+        return response.data;
+      },
       invalidatesTags: ["Stores"],
     }),
 
     // Delete Store
-    deleteStore: builder.mutation({
+    deleteStore: builder.mutation<null | undefined, string>({
       query: (id: string) => ({
         method: "DELETE",
         url: `/stores/${id}`,
       }),
+      transformResponse: (response: ApiResponseDto<null>) => {
+        return response.data;
+      },
       invalidatesTags: ["Stores"],
     }),
   }),

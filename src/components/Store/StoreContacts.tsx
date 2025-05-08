@@ -3,9 +3,10 @@ import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { useDeleteStoreContactMutation, useLazyGetStoreContactsByIdQuery } from '../../services/store';
 import ContactDrawer from './ContactDrawer';
-import { Contact, StoreContact } from '../../services/store/type';
+import { StoreContact } from '../../services/store/type';
 import { DeleteOutlined, EditOutlined, SearchOutlined } from '@ant-design/icons';
 import { contactRole } from '../../config';
+import { Contact } from '../../services/contact';
 
 
 

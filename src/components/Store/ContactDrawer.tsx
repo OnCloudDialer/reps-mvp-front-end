@@ -3,7 +3,7 @@ import { Button, Drawer } from 'antd';
 import React from 'react';
 import ContactForm from './ContactForm';
 import { useCreateStoreContactMutation, useUpdateStoreContactMutation } from '../../services/store';
-import { Contact } from '../../services/store/type';
+import { Contact } from '../../services/contact';
 
 
 interface ContactDrawerProps {

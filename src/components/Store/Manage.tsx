@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Button, Modal, Form, Input, InputNumber, Select, Tag, Space, Popconfirm, Row, Col } from 'antd';
-import { Tag as TagType } from '../../services/tag/type';
 import { useGetTagsQuery } from '../../services/tag';
 import { useCreateStoreMutation, useDeleteStoreMutation, useLazyGetStoreQuery, useUpdateStoreMutation } from '../../services/store';
 import StoreSearchFilter from './Filter';
 import Link from 'antd/es/typography/Link';
 import { useNavigate } from 'react-router-dom';
 import { buildUrl } from '../../helpers';
-import { Store, TagElement } from '../../services/store/type';
+import { Store, StoreForm, TagElement } from '../../services/store/type';
 import PageLayout from '../common/PageLayout';
 
 
 export default function ManageStore() {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<StoreForm>();
     const [stores, setStores] = useState<Store[]>([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [tags, setTags] = useState<TagType[]>([]);
-    const { data, isSuccess, } = useGetTagsQuery({})
+    const { data: tags = [], } = useGetTagsQuery()
     const [trigger, { data: storeData, isSuccess: isStoreFetched, isLoading }] = useLazyGetStoreQuery();
 
     const [createStore, { isLoading: isCreating }] = useCreateStoreMutation()
@@ -32,7 +30,7 @@ export default function ManageStore() {
         if (store) {
             form.setFieldsValue({ ...store, tagIds: store.tags.map(({ tagId }) => tagId) })
         } else {
-            form.setFieldsValue({ name: '', latitude: '', longitude: '', tags: [] });
+            form.setFieldsValue({ name: '', latitude: 0, longitude: 0, tagIds: [], address: '', city: '', region: '' });
         }
         setIsModalOpen(true);
     };
@@ -43,8 +41,8 @@ export default function ManageStore() {
 
     const handleSubmit = () => {
         form.validateFields().then(values => {
-            if (editingStore) {
-                updateStore({ id: values.id, data: values });
+            if (editingStore && values.id) {
+                updateStore(values);
             } else {
                 createStore(values)
             }
@@ -73,7 +71,7 @@ export default function ManageStore() {
         },
         {
             title: 'Location',
-            render: (_, record: Store) => `${record.latitude}, ${record.longitude}`
+            render: (_: string, record: Store) => `${record.latitude}, ${record.longitude}`
         },
         {
             title: 'Tags',
@@ -88,7 +86,7 @@ export default function ManageStore() {
         },
         {
             title: 'Actions',
-            render: (_, record: Store) => (
+            render: (_: string, record: Store) => (
                 <Space>
                     <Button onClick={() => handleOpenModal(record)}>Edit</Button>
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.id)}>
@@ -99,21 +97,16 @@ export default function ManageStore() {
         }
     ];
 
-    useEffect(() => {
-        if (isSuccess) {
-            setTags(data);
-        }
-    }, [isSuccess, data]);
 
     useEffect(() => {
         if (isStoreFetched) {
-            setStores(storeData.data);
+            setStores(storeData);
         }
     }, [isStoreFetched, storeData]);
 
 
     useEffect(() => {
-        trigger({});
+        trigger(undefined);
     }, [])
 
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
     Form,
     Input,
@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { contactRole } from '../../config';
-import { Contact } from '../../services/store/type';
+import { Contact } from '../../services/contact';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -24,7 +24,6 @@ interface ContactFormProps {
 
 const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
     const [form] = Form.useForm<Contact>();
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const onFinish = (values: Contact) => {
         const finalValues = {
@@ -37,7 +36,7 @@ const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
     const handleUpload = (info: any) => {
         if (info.file.status === 'done') {
             const url = URL.createObjectURL(info.file.originFileObj);
-            setImageUrl(url);
+            console.log("🚀 ~ handleUpload ~ url:", url)
             message.success(`${info.file.name} uploaded successfully!`);
         } else if (info.file.status === 'error') {
             message.error(`${info.file.name} upload failed.`);
@@ -106,7 +105,7 @@ const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
             </Form.Item>
 
             <Form.Item label="Profile Picture">
-                <Tabs defaultActiveKey="upload" onChange={() => setImageUrl(null)}>
+                <Tabs defaultActiveKey="upload" >
                     <TabPane tab="Upload File" key="upload">
                         <Upload
                             name="profile"
@@ -125,7 +124,6 @@ const ContactForm = ({ onSubmit, loading, data }: ContactFormProps) => {
                     <TabPane tab="Use Image URL" key="url">
                         <Input
                             placeholder="https://example.com/image.jpg"
-                            onChange={(e) => setImageUrl(e.target.value)}
                         />
                     </TabPane>
                 </Tabs>

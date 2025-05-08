@@ -1,20 +1,18 @@
 import { Form, Input, Select, Button, Row, Col } from 'antd';
 import { Tag } from '../../services/tag/type';
 import { SearchOutlined } from '@ant-design/icons';
+import { StoreQueryParams } from '../../services/store/type';
 
 
 interface StoreSearchFilterProps {
     tags: Tag[];
-    onSearch: (data: {
-        tags?: Tag[];
-        name?: string;
-    }) => void;
+    onSearch: (data: StoreQueryParams) => void;
 }
 
 const StoreSearchFilter = ({ tags = [], onSearch }: StoreSearchFilterProps) => {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<StoreQueryParams>();
 
-    const handleFinish = (values: { tagIds?: string[], name?: string }) => {
+    const handleFinish = (values: StoreQueryParams) => {
         onSearch(values);
     };
 
@@ -38,7 +36,7 @@ const StoreSearchFilter = ({ tags = [], onSearch }: StoreSearchFilterProps) => {
                 </Col>
 
                 <Col span={6}>
-                    <Form.Item name="tagIds">
+                    <Form.Item name="tags">
                         <Select
                             mode="multiple"
                             allowClear

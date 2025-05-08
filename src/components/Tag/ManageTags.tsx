@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Table, Button, Modal, Form, Input, Space, Popconfirm, Tag } from 'antd';
 import { useCreateTagMutation, useDeleteTagMutation, useGetTagsQuery, useUpdateTagMutation } from '../../services/tag';
-import { Tag as TagType } from '../../services/tag/type';
+import { TagForm, TagStore, Tag as TagType } from '../../services/tag/type';
 import PageLayout from '../common/PageLayout';
 
 
 
 
 export default function TagManagementUI() {
-    const [form] = Form.useForm();
-    const [tags, setTags] = useState<TagType[]>([]);
-    const { data, isLoading, isSuccess, } = useGetTagsQuery({})
+    const [form] = Form.useForm<TagForm>();
+    const { data, isLoading, } = useGetTagsQuery()
     const [createTag, { isLoading: isCreating }] = useCreateTagMutation()
     const [deleteTag, { isLoading: isDeleting }] = useDeleteTagMutation()
     const [updateTag, { isLoading: isUpdating }] = useUpdateTagMutation()
@@ -19,7 +18,7 @@ export default function TagManagementUI() {
 
     const handleOpenModal = (tag: TagType | null) => {
         setEditingTag(tag);
-        form.setFieldsValue(tag || { name: '', associatedStores: [] });
+        form.setFieldsValue(tag || { name: '', id: '' });
         setIsModalOpen(true);
     };
 
@@ -30,11 +29,7 @@ export default function TagManagementUI() {
     const handleSubmit = () => {
         form.validateFields().then(values => {
             if (editingTag) {
-                updateTag({
-                    id: values.id, data: {
-                        name: values.name
-                    }
-                })
+                updateTag(values)
             } else {
                 createTag({
                     name: values.name
@@ -45,11 +40,6 @@ export default function TagManagementUI() {
         });
     };
 
-    useEffect(() => {
-        if (isSuccess) {
-            setTags(data);
-        }
-    }, [isSuccess, data]);
 
     const columns = [
         {
@@ -59,7 +49,7 @@ export default function TagManagementUI() {
         {
             title: 'Associated Stores',
             dataIndex: 'stores',
-            render: (value: any) => {
+            render: (value: TagStore[]) => {
                 return <Space>
                     {value.map(({ store }) => (
                         <Tag color="blue" key={store.id}>{store.name}</Tag>
@@ -69,7 +59,7 @@ export default function TagManagementUI() {
         },
         {
             title: 'Actions',
-            render: (_, record: TagType) => (
+            render: (_: string, record: TagType) => (
                 <Space>
                     <Button loading={isDeleting} onClick={() => handleOpenModal(record)}>Edit</Button>
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.id)}>
@@ -85,7 +75,7 @@ export default function TagManagementUI() {
     return (
         <PageLayout breadCrumbItems={[]}>
             <Button type="primary" loading={isLoading} onClick={() => handleOpenModal(null)}>+ Add Tag</Button>
-            <Table loading={isLoading || isDeleting} className="mt-4" rowKey="id" dataSource={tags} columns={columns} />
+            <Table loading={isLoading || isDeleting} className="mt-4" rowKey="id" dataSource={data} columns={columns} />
 
             <Modal
                 title={editingTag ? 'Edit Tag' : 'Add Tag'}
@@ -98,17 +88,6 @@ export default function TagManagementUI() {
                     <Form.Item name="name" label="Tag Name" rules={[{ required: true, message: 'Please enter a tag name' }]}>
                         <Input />
                     </Form.Item>
-                    {/* <Form.Item name="stores" label="Associated Stores">
-                        <Select
-                            mode="multiple"
-                            style={{ width: '100%' }}
-                            placeholder="Select associated stores"
-                        >
-                            {initialStores.map(store => (
-                                <Option key={store} value={store}>{store}</Option>
-                            ))}
-                        </Select>
-                    </Form.Item> */}
                 </Form>
             </Modal>
         </PageLayout>

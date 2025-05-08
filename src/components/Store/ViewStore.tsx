@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLazyGetStoreByIdQuery } from '../../services/store';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '../common/Loading';
 import PageLayout from '../common/PageLayout';
 import { buildUrl } from '../../helpers';
@@ -13,7 +13,7 @@ const ViewStore = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [fetchStore, { isLoading, isFetching, data }] = useLazyGetStoreByIdQuery();
+    const [fetchStore, { isLoading, data }] = useLazyGetStoreByIdQuery();
 
 
     useEffect(() => {

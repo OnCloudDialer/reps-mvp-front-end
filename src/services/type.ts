@@ -1,8 +1,20 @@
-export class ApiResponseDto<T> {
+export interface ApiResponseDto<T> {
   data?: T;
-  error?: {
-    message: string;
-    error?: unknown;
-  };
+  error?: ApiErrorResponse;
   message?: string;
+}
+
+export interface ApiErrorResponse {
+  error: APIErrorResponseError;
+}
+
+export interface APIErrorResponseError {
+  message: string;
+  error: ErrorError;
+}
+
+export interface ErrorError {
+  statusCode: number;
+  message: string;
+  error: string;
 }
