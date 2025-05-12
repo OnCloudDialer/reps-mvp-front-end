@@ -8,6 +8,7 @@ import Link from 'antd/es/typography/Link';
 import { Col, Row, Tabs, TabsProps, Typography } from 'antd';
 import { BookOutlined, ContactsOutlined } from '@ant-design/icons';
 import StoreContacts from './StoreContacts';
+import StoreNotes from './StoreNotes';
 
 const ViewStore = () => {
     const { id } = useParams();
@@ -38,7 +39,7 @@ const ViewStore = () => {
             key: '2',
             label: 'Notes',
             icon: <BookOutlined />,
-            children: 'Content of Tab Pane 2',
+            children: <StoreNotes id={data?.id || ''} storeName={data?.name || ''} />,
         },
 
         {

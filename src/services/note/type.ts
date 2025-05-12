@@ -6,6 +6,7 @@ export interface Note {
 }
 
 export interface NoteForm {
-  contactId: string;
+  contactId?: string;
+  storeId: string;
   note: string;
 }

@@ -8,11 +8,12 @@ import {
   StoreQueryParams,
 } from "./type";
 import { ApiResponseDto } from "../type";
-import { Contact } from "../contact/type";
+import { Contact, ContactNoteQueryParams } from "../contact/type";
+import { Note, NoteForm } from "../note/type";
 
 export const storeService = createApi({
   reducerPath: "store",
-  tagTypes: ["Stores", "Store-Contacts"],
+  tagTypes: ["Stores", "Store-Contacts", "Store-Notes"],
   baseQuery: RTKCustomFetchBase,
   endpoints: (builder) => ({
     // Create Store
@@ -144,6 +145,26 @@ export const storeService = createApi({
       },
       invalidatesTags: ["Stores"],
     }),
+
+    // Create Store Notes
+    createStoreNote: builder.mutation<Note | undefined, NoteForm>({
+      query: (data) => ({
+        method: "POST",
+        url: "/stores/create-note",
+        body: data,
+      }),
+      transformResponse: (response: ApiResponseDto<Note>) => response.data,
+      invalidatesTags: ["Store-Notes"],
+    }),
+
+    getStoreNotes: builder.query<Note[] | undefined, ContactNoteQueryParams>({
+      query: (params) => ({
+        method: "GET",
+        params,
+        url: `/stores/notes/${params.storeId}`,
+      }),
+      transformResponse: (response: ApiResponseDto<Note[]>) => response.data,
+    }),
   }),
 });
 export const {
@@ -160,4 +181,7 @@ export const {
   useCreateStoreContactMutation,
   useUpdateStoreContactMutation,
   useDeleteStoreContactMutation,
+  useCreateStoreNoteMutation,
+  useGetStoreNotesQuery,
+  useLazyGetStoreNotesQuery,
 } = storeService;

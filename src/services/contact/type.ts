@@ -41,6 +41,7 @@ export interface ContactQueryParams {
 
 export interface ContactNoteQueryParams {
   startDate?: string;
-  contactId: string;
+  contactId?: string;
+  storeId?: string;
   endDate?: string;
 }
