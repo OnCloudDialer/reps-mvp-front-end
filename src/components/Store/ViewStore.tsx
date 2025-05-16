@@ -6,9 +6,10 @@ import PageLayout from '../common/PageLayout';
 import { buildUrl } from '../../helpers';
 import Link from 'antd/es/typography/Link';
 import { Col, Row, Tabs, TabsProps, Typography } from 'antd';
-import { BookOutlined, ContactsOutlined } from '@ant-design/icons';
+import { BookOutlined, ContactsOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import StoreContacts from './StoreContacts';
 import StoreNotes from './StoreNotes';
+import ViewLocation from '../common/Maps/ViewLocation';
 
 const ViewStore = () => {
     const { id } = useParams();
@@ -57,32 +58,37 @@ const ViewStore = () => {
             }
         ]}>
             {/* Display Store Detail */}
-            <Row gutter={12} className='flex-col gap-6'>
-                <Row gutter={12}>
+            <Row className='flex-col gap-4'>
+                <Row >
                     <Col span={24}>
                         <Typography className='font-semibold text-2xl'>{data?.name}</Typography>
                     </Col>
                 </Row>
-                <Row gutter={[12, 12]}>
-                    <Col span={6}>
-                        <Typography className='font-semibold text-base'>Address</Typography>
-                        <Typography>{data?.address}</Typography>
+                <Row className='flex-row justify-between'>
+                    <Col span={10}>
+                        <Row className='gap-4'>
+                            <Col className='!px-0' span={20}>
+                                <Typography className='font-semibold text-base mb-2'>Address</Typography>
+                                <Typography>{data?.address}</Typography>
+                            </Col>
+                            <Row className='w-full'>
+                                <Col span={8}>
+                                    <Typography className='font-semibold text-base mb-2'>Region</Typography>
+                                    <Typography>{data?.region}</Typography>
+                                </Col>
+                                <Col span={8}>
+                                    <Typography className='font-semibold text-base mb-2'>City</Typography>
+                                    <Typography>{data?.city}</Typography>
+                                </Col>
+                            </Row>
+                        </Row>
                     </Col>
-                    <Col span={6}>
-                        <Typography className='font-semibold text-base'>Region</Typography>
-                        <Typography>{data?.region}</Typography>
-                    </Col>
-                    <Col span={6}>
-                        <Typography className='font-semibold text-base'>City</Typography>
-                        <Typography>{data?.city}</Typography>
-                    </Col>
-                    <Col span={6}>
-                        <Typography className='font-semibold text-base'>Latitude</Typography>
-                        <Typography>{data?.latitude}</Typography>
-                    </Col>
-                    <Col span={6}>
-                        <Typography className='font-semibold text-base'>Longitude</Typography>
-                        <Typography>{data?.longitude}</Typography>
+                    <Col span={12}>
+                        <Typography className='font-semibold text-base mb-2'>Location <EnvironmentOutlined /></Typography>
+                        <ViewLocation currentLocation={data ? {
+                            lat: data?.latitude,
+                            lng: data?.longitude,
+                        } : undefined} />
                     </Col>
                 </Row>
 

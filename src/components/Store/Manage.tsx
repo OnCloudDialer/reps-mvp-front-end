@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Input, InputNumber, Select, Tag, Space, Popconfirm, Row, Col } from 'antd';
+import { Table, Button, Modal, Form, Input, Select, Tag, Space, Popconfirm, Row, Col, Typography } from 'antd';
 import { useGetTagsQuery } from '../../services/tag';
 import { useCreateStoreMutation, useDeleteStoreMutation, useLazyGetStoreQuery, useUpdateStoreMutation } from '../../services/store';
 import StoreSearchFilter from './Filter';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { buildUrl } from '../../helpers';
 import { Store, StoreForm, TagElement } from '../../services/store/type';
 import PageLayout from '../common/PageLayout';
+import ChooseLocationMap from '../common/Maps/ChooseLocationMap';
 
 
 export default function ManageStore() {
@@ -128,7 +129,11 @@ export default function ManageStore() {
                 title={editingStore ? 'Edit Store' : 'Add Store'}
                 open={isModalOpen}
                 onOk={handleSubmit}
-                onCancel={() => setIsModalOpen(false)}
+                className='min-w-[700px]'
+                onCancel={() => {
+                    setIsModalOpen(false);
+                    setEditingStore(null);
+                }}
             >
                 <Form disabled={isCreating || isUpdating} form={form} layout="vertical">
                     <Form.Item name='id' hidden />
@@ -175,25 +180,6 @@ export default function ManageStore() {
                             </Form.Item>
                         </Col>
 
-                        <Col span={12}>
-                            <Form.Item
-                                name="latitude"
-                                label="Latitude"
-                                rules={[{ required: true, message: 'Enter latitude' }]}
-                            >
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-
-                        <Col span={12}>
-                            <Form.Item
-                                name="longitude"
-                                label="Longitude"
-                                rules={[{ required: true, message: 'Enter longitude' }]}
-                            >
-                                <InputNumber style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
 
                         <Col span={24}>
                             <Form.Item
@@ -209,6 +195,26 @@ export default function ManageStore() {
                                     }))}
                                     placeholder="Enter or select tags"
                                 />
+                            </Form.Item>
+                        </Col>
+
+                        <Col span={24}>
+                            <Form.Item hidden name={'latitude'} />
+                            <Form.Item hidden name={'longitude'} />
+                            <Form.Item label={<Typography className='font-semibold mb-2'>
+                                Choose Store Location
+                            </Typography>} name={'location'}>
+                                <ChooseLocationMap currentLocation={editingStore ? {
+                                    lat: editingStore.latitude,
+                                    lng: editingStore.longitude,
+                                } : undefined} onFinish={(data) => {
+                                    if (data.lat && data.lng) {
+                                        form.setFieldsValue({
+                                            latitude: data.lat,
+                                            longitude: data.lng,
+                                        })
+                                    }
+                                }} />
                             </Form.Item>
                         </Col>
                     </Row>
