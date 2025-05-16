@@ -1,4 +1,4 @@
-import { ContactsOutlined, HddOutlined, ProductOutlined, TagOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, ContactsOutlined, HddOutlined, ProductOutlined, TagOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
 import { AppRouteSlugs } from '../services/routes'
 import { useNavigate } from 'react-router-dom'
@@ -39,6 +39,14 @@ const SideBarMenuItems = () => {
                 },
                 {
                     key: '4',
+                    label: 'Area Tags',
+                    icon: <ApartmentOutlined />,
+                    onClick: () => {
+                        navigate(AppRouteSlugs.manageAreaTags)
+                    }
+                },
+                {
+                    key: '5',
                     label: 'Contacts',
                     icon: <ContactsOutlined />,
                     onClick: () => {

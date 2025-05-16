@@ -6,6 +6,7 @@ import authUser from "./slices/AuthUser";
 import { tagService } from "../services/tag";
 import { storeService } from "../services/store";
 import { contactService } from "../services/contact";
+import { areaTagService } from "../services/areaTag";
 
 export const store = configureStore({
   reducer: {
@@ -13,12 +14,14 @@ export const store = configureStore({
     [tagService.reducerPath]: tagService.reducer,
     [storeService.reducerPath]: storeService.reducer,
     [contactService.reducerPath]: contactService.reducer,
+    [areaTagService.reducerPath]: areaTagService.reducer,
     authUser: authUser,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(authService.middleware)
       .concat(tagService.middleware)
+      .concat(areaTagService.middleware)
       .concat(contactService.middleware)
       .concat(storeService.middleware)
       .concat(rtkQueryErrorLogger),

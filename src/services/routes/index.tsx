@@ -1,3 +1,4 @@
+import AreaTagManagement from "../../components/AreaTags/ManageAreaTags";
 import ManageContacts from "../../components/Contact/Manage";
 import ViewContact from "../../components/Contact/ViewContact";
 import Home from "../../components/Home";
@@ -14,6 +15,7 @@ export const AppRouteSlugs = {
   manageStores: "/manage-stores",
   manageContacts: "/manage-contacts",
   manageTags: "/manage-tags",
+  manageAreaTags: "/manage-area-tags",
   viewStore: "/view-store/:id",
   viewContact: "/view-contact/:id"
 };
@@ -43,6 +45,11 @@ export const AppRoutes = [
   {
     path: AppRouteSlugs.manageTags,
     component: <ManageTags />
+  },
+
+  {
+    path: AppRouteSlugs.manageAreaTags,
+    component: <AreaTagManagement />
   },
 
   {
