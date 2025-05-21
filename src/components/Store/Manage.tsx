@@ -9,6 +9,7 @@ import { buildUrl } from '../../helpers';
 import { Store, StoreForm, TagElement } from '../../services/store/type';
 import PageLayout from '../common/PageLayout';
 import ChooseLocationMap from '../common/Maps/ChooseLocationMap';
+import { useGetAreaTagsQuery } from '../../services/areaTag';
 
 
 export default function ManageStore() {
@@ -17,6 +18,7 @@ export default function ManageStore() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: tags = [], } = useGetTagsQuery()
+    const { data: areaTags, isLoading: isGettingAreaTags, } = useGetAreaTagsQuery()
     const [trigger, { data: storeData, isSuccess: isStoreFetched, isLoading }] = useLazyGetStoreQuery();
 
     const [createStore, { isLoading: isCreating }] = useCreateStoreMutation()
@@ -194,6 +196,22 @@ export default function ManageStore() {
                                         value: id
                                     }))}
                                     placeholder="Enter or select tags"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item
+                                name="areaTagId"
+                                label="Area Tag"
+                            >
+                                <Select
+                                    loading={isGettingAreaTags}
+                                    style={{ width: '100%' }}
+                                    options={(areaTags || []).map(({ id, name }) => ({
+                                        label: name,
+                                        value: id
+                                    }))}
+                                    placeholder="Select the Area Tag"
                                 />
                             </Form.Item>
                         </Col>

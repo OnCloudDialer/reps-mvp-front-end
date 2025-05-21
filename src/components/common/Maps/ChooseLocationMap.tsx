@@ -2,9 +2,10 @@
 import { Map, MapMouseEvent, Marker } from '@vis.gl/react-google-maps';
 import React, { useEffect, useState } from 'react';
 import MapProvider from './MapProvider';
+import { PositionType } from './type';
+import useCurrentLocation from './hooks/useCurrentLocation';
 
 
-interface PositionType { lat: number, lng: number }
 
 
 interface ChooseLocationMapProps {
@@ -13,8 +14,7 @@ interface ChooseLocationMapProps {
 }
 
 const ChooseLocationMap: React.FC<ChooseLocationMapProps> = ({ onFinish, currentLocation }) => {
-
-    const [currentPosition, setCurrentPosition] = useState<PositionType | null>(null);
+    const { currentPosition } = useCurrentLocation();
     const [marker, setMarker] = useState<PositionType | null>(null);
 
     useEffect(() => {
@@ -24,7 +24,6 @@ const ChooseLocationMap: React.FC<ChooseLocationMapProps> = ({ onFinish, current
                     (position) => {
                         const { latitude, longitude } = position.coords;
                         const loc = { lat: latitude, lng: longitude };
-                        setCurrentPosition(loc);
                         setMarker(loc);
                         console.log("📍 Fetched current location:", loc);
                     },
@@ -36,7 +35,6 @@ const ChooseLocationMap: React.FC<ChooseLocationMapProps> = ({ onFinish, current
         };
 
         if (currentLocation) {
-            setCurrentPosition(currentLocation);
             setMarker(currentLocation);
             console.log("📌 Using provided currentLocation:", currentLocation);
         } else {
@@ -44,7 +42,6 @@ const ChooseLocationMap: React.FC<ChooseLocationMapProps> = ({ onFinish, current
         }
         return () => {
             setMarker(null);
-            setCurrentPosition(null);
         }
     }, []);
 

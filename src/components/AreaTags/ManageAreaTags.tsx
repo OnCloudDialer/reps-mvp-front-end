@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Table, Button, Modal, Form, Input, Space, Popconfirm } from 'antd';
+import { Table, Button, Modal, Form, Input, Space, Popconfirm, Typography } from 'antd';
 import PageLayout from '../common/PageLayout';
 import { AreaTagForm, AreaTagType } from '../../services/areaTag/type';
 import { useCreateAreaTagMutation, useDeleteAreaTagMutation, useGetAreaTagsQuery, useUpdateAreaTagMutation } from '../../services/areaTag';
+import MapDrawingManger from '../common/Maps/MapDrawingManger';
+import MapProvider from '../common/Maps/MapProvider';
 
 
 
@@ -32,7 +34,8 @@ export default function AreaTagManagement() {
                 updateTag(values)
             } else {
                 createTag({
-                    name: values.name
+                    name: values.name,
+                    coords: values.coords
                 })
             }
             setIsModalOpen(false);
@@ -71,13 +74,29 @@ export default function AreaTagManagement() {
             <Modal
                 title={editingTag ? 'Edit Area Tag' : 'Add Area Tag'}
                 open={isModalOpen}
+                width={800}
                 onOk={handleSubmit}
                 onCancel={() => setIsModalOpen(false)}
             >
+
                 <Form disabled={isCreating || isUpdating} form={form} layout="vertical">
                     <Form.Item hidden name={'id'} />
                     <Form.Item name="name" label="Area Tag Name" rules={[{ required: true, message: 'Please enter a area tag name' }]}>
                         <Input />
+                    </Form.Item>
+                    <Form.Item name="coords" label="Location Area" rules={[{ required: true, message: 'Please enter a area ' }]}>
+                        <Typography className='mb-4 text-sm text-slate-800'>
+                            Click to begin outlining your area. Move the cursor to draw the desired shape, adjusting freely to match the boundaries you intend to define.
+                        </Typography>
+                        <MapProvider>
+                            <MapDrawingManger data={editingTag?.coords} onDone={(data) => {
+
+                                if (data.paths) {
+                                    form.setFieldValue('coords', data.paths)
+                                }
+
+                            }} />
+                        </MapProvider>
                     </Form.Item>
                 </Form>
             </Modal>
