@@ -1,4 +1,4 @@
-import { ApartmentOutlined, ContactsOutlined, HddOutlined, ProductOutlined, TagOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, ContactsOutlined, HddOutlined, ProductOutlined, ShopOutlined, TagOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
 import { AppRouteSlugs } from '../services/routes'
 import { useNavigate } from 'react-router-dom'
@@ -24,7 +24,7 @@ const SideBarMenuItems = () => {
                 {
                     key: '2',
                     label: 'Stores',
-                    icon: <ProductOutlined />,
+                    icon: <ShopOutlined />,
                     onClick: () => {
                         navigate(AppRouteSlugs.manageStores)
                     }
@@ -51,6 +51,14 @@ const SideBarMenuItems = () => {
                     icon: <ContactsOutlined />,
                     onClick: () => {
                         navigate(AppRouteSlugs.manageContacts)
+                    }
+                },
+                {
+                    key: '6',
+                    label: 'Products',
+                    icon: <ProductOutlined />,
+                    onClick: () => {
+                        navigate(AppRouteSlugs.manageProducts)
                     }
                 },
             ]}

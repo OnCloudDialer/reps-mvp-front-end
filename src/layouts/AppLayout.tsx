@@ -3,6 +3,8 @@ import { Header, Footer, Content } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import React from 'react'
 import SideBarMenuItems from './SideBarMenuItems'
+import { Toaster } from 'sonner'
+
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
     const {
@@ -10,6 +12,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     } = theme.useToken();
     return (
         <Layout className='min-h-screen'>
+            <Toaster richColors />
             <Header>
             </Header>
             <Layout

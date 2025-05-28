@@ -7,11 +7,13 @@ import { tagService } from "../services/tag";
 import { storeService } from "../services/store";
 import { contactService } from "../services/contact";
 import { areaTagService } from "../services/areaTag";
+import { productService } from "../services/product";
 
 export const store = configureStore({
   reducer: {
     [authService.reducerPath]: authService.reducer,
     [tagService.reducerPath]: tagService.reducer,
+    [productService.reducerPath]: productService.reducer,
     [storeService.reducerPath]: storeService.reducer,
     [contactService.reducerPath]: contactService.reducer,
     [areaTagService.reducerPath]: areaTagService.reducer,
@@ -21,6 +23,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(authService.middleware)
       .concat(tagService.middleware)
+      .concat(productService.middleware)
       .concat(areaTagService.middleware)
       .concat(contactService.middleware)
       .concat(storeService.middleware)
