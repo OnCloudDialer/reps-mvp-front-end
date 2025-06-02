@@ -9,6 +9,7 @@ import Register from "../../components/Register";
 import ManageStore from "../../components/Store/Manage";
 import ViewStore from "../../components/Store/ViewStore";
 import ManageTags from "../../components/Tag/ManageTags";
+import VisitDashboard from "../../components/Visits/VisitDashboard";
 
 export const AppRouteSlugs = {
   login: "/login",
@@ -21,7 +22,8 @@ export const AppRouteSlugs = {
   manageAreaTags: "/manage-area-tags",
   viewStore: "/view-store/:id",
   viewProduct: "/view-product/:id",
-  viewContact: "/view-contact/:id"
+  viewContact: "/view-contact/:id",
+  visitDashboard: "/visit-dashboard"
 };
 
 
@@ -75,5 +77,10 @@ export const AppRoutes = [
   {
     path: AppRouteSlugs.viewStore,
     component: <ViewStore />
+  },
+
+  {
+    path: AppRouteSlugs.visitDashboard,
+    component: <VisitDashboard />
   },
 ]

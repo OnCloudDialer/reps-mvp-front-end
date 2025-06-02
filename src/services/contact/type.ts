@@ -37,6 +37,7 @@ export interface ContactNoteForm {
 export interface ContactQueryParams {
   name?: string;
   role?: string;
+  storeId?: string;
 }
 
 export interface ContactNoteQueryParams {

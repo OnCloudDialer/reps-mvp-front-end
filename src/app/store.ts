@@ -8,11 +8,13 @@ import { storeService } from "../services/store";
 import { contactService } from "../services/contact";
 import { areaTagService } from "../services/areaTag";
 import { productService } from "../services/product";
+import { visitService } from "../services/visits";
 
 export const store = configureStore({
   reducer: {
     [authService.reducerPath]: authService.reducer,
     [tagService.reducerPath]: tagService.reducer,
+    [visitService.reducerPath]: visitService.reducer,
     [productService.reducerPath]: productService.reducer,
     [storeService.reducerPath]: storeService.reducer,
     [contactService.reducerPath]: contactService.reducer,
@@ -23,6 +25,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(authService.middleware)
       .concat(tagService.middleware)
+      .concat(visitService.middleware)
       .concat(productService.middleware)
       .concat(areaTagService.middleware)
       .concat(contactService.middleware)
