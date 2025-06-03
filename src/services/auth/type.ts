@@ -15,3 +15,9 @@ export type loginResponse = ApiResponseDto<{
   user: any;
   access_token: string;
 }>;
+
+export interface OrganizationActivitiesType {
+  totalProducts: number;
+  totalStores: number;
+  totalContacts: number;
+}

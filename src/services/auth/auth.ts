@@ -1,8 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { loginRequestDTO, loginResponse, signUpRequestDTO } from "./type";
+import {
+  loginRequestDTO,
+  loginResponse,
+  OrganizationActivitiesType,
+  signUpRequestDTO,
+} from "./type";
 import { RTKCustomFetchBase } from "../RTKfetchBase";
 import { setUserAuthToken } from "../../helpers";
 import { setAuthUser } from "../../app/slices/AuthUser";
+import { ApiResponseDto } from "../type";
 
 export const authService = createApi({
   reducerPath: "auth",
@@ -58,10 +64,27 @@ export const authService = createApi({
         }
       },
     }),
+
+    getActivities: builder.query<OrganizationActivitiesType, void>({
+      query: () => ({
+        method: "GET",
+        url: "/auth/activities",
+      }),
+      transformResponse: (
+        response: ApiResponseDto<OrganizationActivitiesType>
+      ) =>
+        response.data || {
+          totalContacts: 0,
+          totalProducts: 0,
+          totalStores: 0,
+        },
+    }),
   }),
 });
 export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useRefreshTokenMutation,
+  useGetActivitiesQuery,
+  useLazyGetActivitiesQuery,
 } = authService;

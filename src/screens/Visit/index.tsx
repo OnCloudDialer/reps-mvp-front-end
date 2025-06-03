@@ -15,7 +15,7 @@ const Visit: React.FC = () => {
     const navigate = useNavigate()
     const [form] = useForm<VisitFormType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [getVisits, { data: visits, }] = useLazyGetVisitsQuery();
+    const [getVisits, { data: visits, isLoading: isGettingVisit }] = useLazyGetVisitsQuery();
     const [createVisit, { isLoading: isCreating }] = useCreateVisitMutation()
 
     const handleSubmit = () => {
@@ -47,7 +47,7 @@ const Visit: React.FC = () => {
             <div className="w-full justify-between flex items-center">
                 <VisitFilters onSearch={(params) => getVisits(params)} onReset={() => getVisits({})} />
             </div>
-            <VisitCalendar onViewVisit={({ id }) => {
+            <VisitCalendar loading={isGettingVisit} onViewVisit={({ id }) => {
                 navigate(buildUrl('viewVisit', {
                     id
                 }))

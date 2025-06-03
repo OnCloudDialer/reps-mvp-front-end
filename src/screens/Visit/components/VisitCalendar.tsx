@@ -1,4 +1,4 @@
-import { Calendar, CalendarProps } from 'antd';
+import { Calendar, CalendarProps, Skeleton } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
 import { Visit } from '../../../services/visits/type';
@@ -10,9 +10,10 @@ interface VisitCalendarProps {
     visits: Visit[];
     onDateSelect: (value: Dayjs) => void;
     onViewVisit: (value: Visit) => void;
+    loading?: boolean;
 }
 
-const VisitCalendar: React.FC<VisitCalendarProps> = ({ visits, onDateSelect, onViewVisit }) => {
+const VisitCalendar: React.FC<VisitCalendarProps> = ({ visits, onDateSelect, onViewVisit, loading }) => {
 
     const monthCellRender = (value: Dayjs) => {
         const plannedVisit = getMonthlyVisits(visits, value);
@@ -42,6 +43,14 @@ const VisitCalendar: React.FC<VisitCalendarProps> = ({ visits, onDateSelect, onV
         if (info.type === 'month') return monthCellRender(current);
         return info.originNode;
     };
+
+    if (loading) {
+        return <div className='flex flex-col items-start justify-start gap-4'>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+        </div>
+    }
 
     return (
         <Calendar
