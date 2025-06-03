@@ -1,16 +1,16 @@
-import AreaTagManagement from "../../components/AreaTags/ManageAreaTags";
-import ManageContacts from "../../components/Contact/Manage";
-import ViewContact from "../../components/Contact/ViewContact";
-import Home from "../../components/Home";
-import Login from "../../components/Login";
-import ManageProduct from "../../components/Product/ManageProduct";
-import ViewProduct from "../../components/Product/ViewProduct";
-import Register from "../../components/Register";
-import ManageStore from "../../components/Store/Manage";
-import ViewStore from "../../components/Store/ViewStore";
-import ManageTags from "../../components/Tag/ManageTags";
-import ViewVisit from "../../components/Visits/ViewVisit";
-import VisitDashboard from "../../components/Visits/VisitDashboard";
+import AreaTags from "../../screens/AreaTags";
+import Login from "../../screens/Authentication/Login";
+import Register from "../../screens/Authentication/Register";
+import Contacts from "../../screens/Contact";
+import ViewContact from "../../screens/Contact/ViewContact";
+import Home from "../../screens/Dashboard";
+import Product from "../../screens/Product";
+import ViewProduct from "../../screens/Product/ViewProduct";
+import Store from "../../screens/Store";
+import ViewStore from "../../screens/Store/ViewStore";
+import Tags from "../../screens/Tag";
+import Visit from "../../screens/Visit";
+import ViewVisit from "../../screens/Visit/ViewVisit";
 
 export const AppRouteSlugs = {
   login: "/login",
@@ -47,26 +47,26 @@ export const AppRoutes = [
   },
   {
     path: AppRouteSlugs.manageStores,
-    component: <ManageStore />
+    component: <Store />
   },
 
   {
     path: AppRouteSlugs.manageTags,
-    component: <ManageTags />
+    component: <Tags />
   },
 
   {
     path: AppRouteSlugs.manageAreaTags,
-    component: <AreaTagManagement />
+    component: <AreaTags />
   },
 
   {
     path: AppRouteSlugs.manageContacts,
-    component: <ManageContacts />
+    component: <Contacts />
   },
   {
     path: AppRouteSlugs.manageProducts,
-    component: <ManageProduct />
+    component: <Product />
   },
   {
     path: AppRouteSlugs.viewProduct,
@@ -83,7 +83,7 @@ export const AppRoutes = [
 
   {
     path: AppRouteSlugs.visitDashboard,
-    component: <VisitDashboard />
+    component: <Visit />
   },
   {
     path: AppRouteSlugs.viewVisit,

@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authService } from "../services/auth/auth";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { rtkQueryErrorLogger } from "../services/middlerwares/RequestHandler";
+import { rtkQueryErrorLogger } from "../services/middlewares/RequestHandler";
 import authUser from "./slices/AuthUser";
 import { tagService } from "../services/tag";
 import { storeService } from "../services/store";
