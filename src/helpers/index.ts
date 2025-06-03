@@ -37,3 +37,11 @@ export function buildUrl<K extends RouteKey>(
 
   return url;
 }
+
+export function formatEnumLabel(enumValue: string): string {
+  return enumValue
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}

@@ -7,9 +7,12 @@ import { VisitForm as VisitFormType } from '../../services/visits/type';
 import VisitForm from './VisitForm';
 import VisitCalendar from './VisitCalendar';
 import VisitFilters from './VisitFilters';
+import { useNavigate } from 'react-router-dom';
+import { buildUrl } from '../../helpers';
 
 
 const VisitDashboard = () => {
+    const navigate = useNavigate()
     const [form] = useForm<VisitFormType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [getVisits, { data: visits, }] = useLazyGetVisitsQuery();
@@ -44,9 +47,10 @@ const VisitDashboard = () => {
             <div className="w-full justify-between flex items-center">
                 <VisitFilters onSearch={(params) => getVisits(params)} onReset={() => getVisits({})} />
             </div>
-            <VisitCalendar onViewVisit={(data) => {
-                console.log("🚀 ~ VisitDashboard ~ data:", data)
-
+            <VisitCalendar onViewVisit={({ id }) => {
+                navigate(buildUrl('viewVisit', {
+                    id
+                }))
             }} visits={visits || []} onDateSelect={(date) => {
                 form.setFieldValue('scheduledAt', date)
                 setIsModalOpen(true);

@@ -1,5 +1,5 @@
 import { UnitOfMeasure } from "../services/product/type";
-import { VisitType } from "../services/visits/type";
+import { ActivityType, VisitType } from "../services/visits/type";
 
 export const Config = {
   baseApiUrl: import.meta.env.VITE_API_URL,
@@ -11,3 +11,7 @@ export const UnitOfMeasureArray: Array<UnitOfMeasure> =
   Object.values(UnitOfMeasure);
 
 export const VisitTypesArray: Array<VisitType> = Object.values(VisitType);
+export const VisitActivityArray: Array<ActivityType> =
+  Object.values(ActivityType);
+
+export const dateFormat = "MMMM Do YYYY, h:mm:ss a";
