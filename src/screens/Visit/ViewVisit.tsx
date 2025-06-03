@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useLazyGetVisitByIdQuery } from '../../services/visits';
 import Link from 'antd/es/typography/Link';
 import { buildUrl } from '../../helpers';
-import { Row, Col, Typography, Tabs, TabsProps, Badge } from 'antd';
+import { Row, Col, Typography, Tabs, TabsProps, Badge, Tag } from 'antd';
 import { AreaChartOutlined, BookOutlined } from '@ant-design/icons';
 import VisitNotes from './components/VisitNotes';
 import VisitActivity from './components/VisitActivity';
@@ -67,7 +67,7 @@ const ViewVisit: React.FC = () => {
                     </Col>
                     <Col span={8}>
                         <Typography className='font-semibold text-base'>Scheduled At</Typography>
-                        <Link href={buildUrl('viewStore', { id: data?.storeId })}>{moment(data?.scheduledAt).format(dateFormat)}</Link>
+                        <Tag color='blue'>{moment(data?.scheduledAt).format(dateFormat)}</Tag>
                     </Col>
                     <Col span={8}>
                         <Typography className='font-semibold text-base'>Contact</Typography>

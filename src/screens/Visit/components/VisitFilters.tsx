@@ -1,9 +1,8 @@
 
 import { Form, Select, Button, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { StoreQueryParams } from '../../../services/store/type';
-import { useGetTagsQuery } from '../../../services/tag';
 import { VisitQueryParams } from '../../../services/visits/type';
+import { VisitTypesArray } from '../../../config';
 
 
 interface VisitFiltersProps {
@@ -14,9 +13,8 @@ interface VisitFiltersProps {
 
 const VisitFilters = ({ onSearch, loading }: VisitFiltersProps) => {
     const [form] = Form.useForm<VisitQueryParams>();
-    const { data: tags, isLoading } = useGetTagsQuery()
 
-    const handleFinish = (values: StoreQueryParams) => {
+    const handleFinish = (values: VisitQueryParams) => {
         onSearch(values);
     };
 
@@ -35,16 +33,15 @@ const VisitFilters = ({ onSearch, loading }: VisitFiltersProps) => {
         >
             <Row className='w-full' gutter={[2, 2]}>
 
-                <Col span={4}>
-                    <Form.Item name="tags">
+                <Col span={6}>
+                    <Form.Item name="type">
                         <Select
-                            loading={isLoading}
                             mode="multiple"
                             allowClear
-                            placeholder="Filter by tags"
-                            options={tags?.map(({ id, name }) => ({
-                                label: name,
-                                value: id
+                            placeholder="Filter by Type"
+                            options={VisitTypesArray?.map((item) => ({
+                                label: item,
+                                value: item
                             }))}
                         />
                     </Form.Item>

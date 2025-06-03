@@ -1,11 +1,14 @@
 import './App.css'
 import ApplicationProvider from './layouts/ApplicationProvider'
+import { ErrorBoundary } from './providers/ErrorBoundary'
 
 function App() {
 
   return (
     <>
-      <ApplicationProvider />
+      <ErrorBoundary>
+        <ApplicationProvider />
+      </ErrorBoundary>
     </>
   )
 }

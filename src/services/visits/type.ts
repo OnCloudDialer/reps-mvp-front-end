@@ -33,9 +33,7 @@ export enum VisitType {
 }
 
 export interface VisitQueryParams {
-  contactId?: string;
-  tags?: string;
-  name?: string;
+  type?: string;
 }
 
 export interface VisitNoteQueryParams {
