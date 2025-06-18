@@ -1,11 +1,17 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { RTKCustomFetchBase } from "../RTKfetchBase";
-import { Product, ProductForm, ProductQueryParam } from "./type";
+import {
+  Product,
+  ProductForm,
+  ProductQueryParam,
+  Promotion,
+  PromotionForm,
+} from "./type";
 import { ApiResponseDto } from "../type";
 
 export const productService = createApi({
   reducerPath: "product",
-  tagTypes: ["Products"],
+  tagTypes: ["Products", "Promotions"],
   baseQuery: RTKCustomFetchBase,
   endpoints: (builder) => ({
     // Create Store
@@ -84,6 +90,49 @@ export const productService = createApi({
       },
       invalidatesTags: ["Products"],
     }),
+
+    // Create Promotion
+    createPromotion: builder.mutation<Promotion | undefined, PromotionForm>({
+      query: (data) => ({
+        method: "POST",
+        url: "/products/promotion",
+        body: data,
+      }),
+      transformResponse: (response: ApiResponseDto<Promotion>) => response.data,
+      invalidatesTags: ["Promotions"],
+    }),
+
+    // Update Promotion
+    updatePromotion: builder.mutation<Promotion | undefined, PromotionForm>({
+      query: (data) => ({
+        method: "PATCH",
+        url: "/products/promotion",
+        body: data,
+      }),
+      transformResponse: (response: ApiResponseDto<Promotion>) => response.data,
+      invalidatesTags: ["Promotions"],
+    }),
+    // Delete Promotion
+    deletePromotion: builder.mutation<null, string>({
+      query: (id: string) => ({
+        method: "DELETE",
+        url: `/products/promotion/${id}`,
+      }),
+      transformResponse: (response: ApiResponseDto<null>) =>
+        response.data || null,
+      invalidatesTags: ["Promotions"],
+    }),
+
+    // Get Promotions
+    getPromotion: builder.query<Promotion[], void>({
+      providesTags: [{ type: "Promotions" }],
+      query: () => ({
+        method: "GET",
+        url: "/products/promotion",
+      }),
+      transformResponse: (response: ApiResponseDto<Promotion[]>) =>
+        response.data || [],
+    }),
   }),
 });
 export const {
@@ -95,4 +144,8 @@ export const {
   useLazyGetProductQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
+  useCreatePromotionMutation,
+  useDeletePromotionMutation,
+  useGetPromotionQuery,
+  useUpdatePromotionMutation,
 } = productService;

@@ -6,6 +6,7 @@ import ViewContact from "../../screens/Contact/ViewContact";
 import Home from "../../screens/Dashboard";
 import Product from "../../screens/Product";
 import ViewProduct from "../../screens/Product/ViewProduct";
+import Promotion from "../../screens/Promotion";
 import Store from "../../screens/Store";
 import ViewStore from "../../screens/Store/ViewStore";
 import Tags from "../../screens/Tag";
@@ -26,6 +27,7 @@ export const AppRouteSlugs = {
   viewContact: "/view-contact/:id",
   visitDashboard: "/visit-dashboard",
   viewVisit: "/view-visit/:id",
+  managePromotion: "/manage-promotion"
 };
 
 
@@ -88,5 +90,9 @@ export const AppRoutes = [
   {
     path: AppRouteSlugs.viewVisit,
     component: <ViewVisit />
+  },
+  {
+    path: AppRouteSlugs.managePromotion,
+    component: <Promotion />
   },
 ]

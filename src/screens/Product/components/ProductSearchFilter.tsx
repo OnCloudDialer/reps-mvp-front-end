@@ -2,6 +2,7 @@ import { Form, Input, Button, Row, Col, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { ProductQueryParam } from '../../../services/product/type';
 import { UnitOfMeasureArray } from '../../../config';
+import { useGetPromotionQuery } from '../../../services/product';
 
 
 interface StoreSearchFilterProps {
@@ -12,6 +13,7 @@ interface StoreSearchFilterProps {
 
 const ProductSearchFilter = ({ onSearch, loading }: StoreSearchFilterProps) => {
     const [form] = Form.useForm<ProductQueryParam>();
+    const { data: promotions, isLoading: isGettingPromotions } = useGetPromotionQuery()
 
     const handleFinish = (values: ProductQueryParam) => {
         onSearch(values);
@@ -31,13 +33,13 @@ const ProductSearchFilter = ({ onSearch, loading }: StoreSearchFilterProps) => {
             className='w-full'
         >
             <Row className='w-full' gutter={[2, 2]}>
-                <Col span={4}>
+                <Col span={6}>
                     <Form.Item name="name" >
                         <Input placeholder="Search by name" />
                     </Form.Item>
 
                 </Col>
-                <Col span={4}>
+                <Col span={6}>
                     <Form.Item name="unit" >
                         <Select placeholder="Search By Unit" options={UnitOfMeasureArray.map((value) => ({
                             value,
@@ -45,9 +47,16 @@ const ProductSearchFilter = ({ onSearch, loading }: StoreSearchFilterProps) => {
                         }))} />
                     </Form.Item>
                 </Col>
+                <Col span={6}>
+                    <Form.Item name="promotion" >
+                        <Select placeholder="Search By Promotion" loading={isGettingPromotions} options={promotions?.map(({ id, name }) => ({
+                            value: id,
+                            label: name
+                        }))} />
+                    </Form.Item>
+                </Col>
 
-
-                <Col span={12} className='space-x-2'>
+                <Col span={4} className='space-x-2'>
                     <Button type="primary" htmlType="submit" icon={<SearchOutlined />} />
                     <Button onClick={handleReset}>Reset</Button>
                 </Col>

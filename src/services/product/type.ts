@@ -8,11 +8,20 @@ export interface Product {
   special_price: number;
   announcements: string;
   shareable_info: string;
+  ProductPromotion: ProductPromotion[];
   created_at: Date;
   updated_at: Date;
   organizationId: string;
   imageUrls: ImageUrl[];
   userId: string;
+}
+
+export interface ProductPromotion {
+  id: string;
+  created_at: Date;
+  productId: string;
+  promotionId: string;
+  promotion: Promotion;
 }
 
 export interface ProductForm {
@@ -23,6 +32,7 @@ export interface ProductForm {
   unit_of_measure: UnitOfMeasure;
   regular_price: number;
   special_price: number;
+  promotion_id: string;
   announcements: string;
   shareable_info: string;
   imageUrls?: string[];
@@ -30,6 +40,7 @@ export interface ProductForm {
 
 export interface ProductQueryParam {
   name?: string;
+  promotion?: string;
 }
 
 export enum UnitOfMeasure {
@@ -59,3 +70,39 @@ export interface ImageUrl {
   url: string;
   productId: string;
 }
+
+export interface PromotionForm {
+  id?: string;
+  name: string;
+  description: string;
+  type: PromotionType;
+  value?: Value;
+  valid_from: Date;
+  valid_to: Date;
+  is_active: boolean;
+  notes_for_rep: string;
+}
+
+export interface Promotion {
+  id: string;
+  name: string;
+  description: string;
+  type: PromotionType;
+  value: Value;
+  valid_from: Date;
+  valid_to: Date;
+  is_active: boolean;
+  notes_for_rep: string;
+  userId: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export enum PromotionType {
+  FLAT_DISCOUNT = "FLAT_DISCOUNT",
+  BUY_X_GET_Y = "BUY_X_GET_Y",
+  BUNDLE = "BUNDLE",
+  FREE_GIFT = "FREE_GIFT",
+}
+
+export interface Value {}

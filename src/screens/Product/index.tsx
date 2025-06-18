@@ -1,10 +1,10 @@
-import { Form, Space, Button, Popconfirm, Table, Modal, Row, Col, Input, InputNumber, Select } from 'antd';
+import { Form, Space, Button, Popconfirm, Table, Modal, Row, Col, Input, InputNumber, Select, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, } from 'react-router-dom';
 import { buildUrl } from '../../helpers';
 import Link from 'antd/es/typography/Link';
-import { useCreateProductMutation, useDeleteProductMutation, useLazyGetProductQuery, useUpdateProductMutation } from '../../services/product';
-import { Product as ProductType, ProductForm } from '../../services/product/type';
+import { useCreateProductMutation, useDeleteProductMutation, useGetPromotionQuery, useLazyGetProductQuery, useUpdateProductMutation } from '../../services/product';
+import { Product as ProductType, ProductForm, ProductPromotion } from '../../services/product/type';
 import ProductSearchFilter from './components/ProductSearchFilter';
 import { UnitOfMeasureArray } from '../../config';
 import UploadProductImages from './components/UploadProductImages';
@@ -18,6 +18,7 @@ export default function Product() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [trigger, { data: productsData, isSuccess: isProductsFetched, isLoading }] = useLazyGetProductQuery();
     const [createProduct, { isLoading: isCreating }] = useCreateProductMutation()
+    const { data: promotions, isLoading: isGettingPromotion } = useGetPromotionQuery()
     const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation()
     const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation()
 
@@ -50,6 +51,7 @@ export default function Product() {
 
     const handleSubmit = () => {
         form.validateFields().then(values => {
+            console.log("🚀 ~ form.validateFields ~ values:", values)
             const mappedValues: ProductForm = {
                 announcements: values.announcements,
                 name: values.name,
@@ -62,7 +64,8 @@ export default function Product() {
                 regular_price: parseInt(values.regular_price),
                 unit_of_measure: values.unit_of_measure,
                 shareable_info: values.shareable_info,
-                imageUrls: values.imageUrls
+                imageUrls: values.imageUrls,
+                promotion_id: values.promotion_id
             }
 
 
@@ -92,6 +95,11 @@ export default function Product() {
         {
             title: 'Description',
             dataIndex: 'description',
+        },
+        {
+            title: 'Promotion',
+            dataIndex: 'ProductPromotion',
+            render: (val: ProductPromotion[]) => val.length ? <Tag color='blue'>{val[0].promotion.name}</Tag> : <Tag color='red'>Not Applied</Tag>
         },
         {
             title: 'Default Price',
@@ -148,10 +156,7 @@ export default function Product() {
         }]}>
 
             <div className="bg-white p-4 px-0 flex items-center justify-between gap-2 rounded-md w-100">
-                <ProductSearchFilter onReset={() => {
-                    trigger({
-                    })
-                }} onSearch={(data) => {
+                <ProductSearchFilter onReset={() => trigger({})} onSearch={(data) => {
                     trigger(data)
                 }} />
                 <ProductBulkUpload />
@@ -193,6 +198,18 @@ export default function Product() {
                                 <Select options={UnitOfMeasureArray.map((value) => ({
                                     value,
                                     label: value
+                                }))} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name="promotion_id"
+                                label="Apply Promotion"
+                                rules={[{ required: false }]}
+                            >
+                                <Select loading={isGettingPromotion} options={promotions?.map(({ id, name }) => ({
+                                    value: id,
+                                    label: name
                                 }))} />
                             </Form.Item>
                         </Col>

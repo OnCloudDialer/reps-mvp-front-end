@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buildUrl } from '../../helpers';
 import Link from 'antd/es/typography/Link';
-import { Col, Row, Tabs, TabsProps, Typography, Image } from 'antd';
+import { Col, Row, Tabs, TabsProps, Typography, Image, Tag } from 'antd';
 import { useLazyGetProductByIdQuery } from '../../services/product';
 import { CameraTwoTone } from '@ant-design/icons';
 import Loading from '../../components/common/Loading';
@@ -71,6 +71,10 @@ const ViewProduct = () => {
                             <Col span={8}>
                                 <Typography className='font-semibold text-base mb-2'>Announcements</Typography>
                                 <Typography>{data?.announcements}</Typography>
+                            </Col>
+                            <Col span={8}>
+                                <Typography className='font-semibold text-base mb-2'>Applied Promotion</Typography>
+                                {data?.ProductPromotion.length ? <Tag color='blue'>{data?.ProductPromotion[0].promotion.name}</Tag> : <Tag color='red'>Not Applied</Tag>}
                             </Col>
 
                         </Row>

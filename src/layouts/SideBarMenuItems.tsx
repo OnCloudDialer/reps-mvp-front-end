@@ -1,4 +1,4 @@
-import { ApartmentOutlined, CalendarOutlined, ContactsOutlined, HddOutlined, ProductOutlined, ShopOutlined, TagOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, CalendarOutlined, ContactsOutlined, FundOutlined, HddOutlined, ProductOutlined, ShopOutlined, TagOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
 import { AppRouteSlugs } from '../services/routes'
 import { useNavigate } from 'react-router-dom'
@@ -67,6 +67,14 @@ const SideBarMenuItems = () => {
                     icon: <CalendarOutlined />,
                     onClick: () => {
                         navigate(AppRouteSlugs.visitDashboard)
+                    }
+                },
+                {
+                    key: '8',
+                    label: 'Promotion',
+                    icon: <FundOutlined />,
+                    onClick: () => {
+                        navigate(AppRouteSlugs.managePromotion)
                     }
                 },
             ]}

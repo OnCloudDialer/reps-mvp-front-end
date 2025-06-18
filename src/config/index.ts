@@ -1,4 +1,4 @@
-import { UnitOfMeasure } from "../services/product/type";
+import { PromotionType, UnitOfMeasure } from "../services/product/type";
 import { ActivityType, VisitType } from "../services/visits/type";
 
 export const Config = {
@@ -13,5 +13,8 @@ export const UnitOfMeasureArray: Array<UnitOfMeasure> =
 export const VisitTypesArray: Array<VisitType> = Object.values(VisitType);
 export const VisitActivityArray: Array<ActivityType> =
   Object.values(ActivityType);
+
+export const PromotionTypeArray: Array<PromotionType> =
+  Object.values(PromotionType);
 
 export const dateFormat = "MMMM Do YYYY, h:mm:ss a";
